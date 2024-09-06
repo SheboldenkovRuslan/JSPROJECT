@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./api/
+    ports:
+        - 8080:8080
+
+  postgres:
+    image: postgres:15.2
+    environment:
+      PGDATA: /var/lib/postgresql/data/save
+      POSTGRES_DB: pharmacy
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1q1q1q1q1q
+    volumes:
+      - ./postgresql:/var/lib/postgresql/save/
+      - ./postgresql/initDB.sql:/docker-entrypoint-initdb.d/initDB.sql
+    ports:
+      - 5433:5432
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+      MONGO_INITDB_DATABASE: pharmacy
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo:/data/db
+      - ./mongo/initDB.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
+
+
